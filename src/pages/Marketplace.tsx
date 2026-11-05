@@ -6,10 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useStore } from "@/context/StoreContext";
+import { toast } from "sonner";
 import marketplaceImage from "@/assets/marketplace-image.jpg";
 
 const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { addToCart } = useStore();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const categories = [
@@ -291,9 +294,9 @@ const Marketplace = () => {
                       <Button variant="outline" className="flex-1 hover:bg-primary/5">
                         Voir détails
                       </Button>
-                      <Button className="flex-1 bg-gradient-primary hover:shadow-glow transition-all duration-300">
+                      <Button onClick={() => { addToCart({ id: "p-" + product.id, title: product.title, price: calculateDiscountedPrice(product.price, product.discount), unit: product.unit, kind: "produit" }); toast.success("Ajouté au panier"); }} className="flex-1 bg-gradient-primary hover:shadow-glow transition-all duration-300">
                         <ShoppingCart className="w-4 h-4 mr-2" />
-                        Acheter
+                        Ajouter au panier
                       </Button>
                     </div>
                   </CardContent>

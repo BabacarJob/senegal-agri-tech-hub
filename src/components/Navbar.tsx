@@ -2,17 +2,20 @@ import { useState } from "react";
 import { Menu, X, Leaf, UserCircle, ShoppingCart, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { useStore } from "@/context/StoreContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { cartCount } = useStore();
 
   const navigation = [
     { name: "Accueil", href: "/", icon: Leaf },
     { name: "À propos", href: "/about", icon: UserCircle },
     { name: "Services", href: "/services", icon: BarChart3 },
     { name: "Marketplace", href: "/marketplace", icon: ShoppingCart },
-    { name: "Blog", href: "/blog", icon: BarChart3 },
-    { name: "Contact", href: "/contact", icon: UserCircle },
+    { name: "Réservations", href: "/reservations", icon: BarChart3 },
+    { name: "Tableau de bord", href: "/dashboard/user", icon: UserCircle },
   ];
 
   return (
@@ -31,7 +34,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6">
             {navigation.map((item) => (
               <a
                 key={item.name}
@@ -45,6 +48,10 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
+            <Link to="/cart" className="relative p-2 rounded-md hover:bg-accent" aria-label="Panier">
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">{cartCount}</span>}
+            </Link>
             <Button variant="ghost" className="hover:bg-accent">
               Connexion
             </Button>
@@ -54,7 +61,12 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center">
+            <Link to="/cart" className="relative p-2 rounded-md hover:bg-accent" aria-label="Panier">
+              <ShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">{cartCount}</span>}
+            </Link>
+            
             <Button
               variant="ghost"
               size="sm"
